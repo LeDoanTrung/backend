@@ -46,9 +46,9 @@ public class ShoppingUserDetails implements UserDetails{
 	}
 
 	@Override
-	public boolean isAccountNonExpired() {
+	public boolean isAccountNonExpired() { //Ko lock account này
 		// TODO Auto-generated method stub
-		return true;
+		return true; //true -> account ko bị locked, false -> account bị locked
 	}
 
 	@Override
@@ -60,13 +60,13 @@ public class ShoppingUserDetails implements UserDetails{
 	@Override
 	public boolean isCredentialsNonExpired() {
 		// TODO Auto-generated method stub
-		return true;
+		return true; //true-> ko hết hạn
 	}
 
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return user.isEnabled();
+		return user.isEnabled(); //kiểm tra user có enabled hay k -> ko thì ko login
 	}
 	
 	public String getFullName() {

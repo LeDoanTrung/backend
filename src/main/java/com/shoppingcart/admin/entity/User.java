@@ -41,6 +41,8 @@ public class User extends IdBaseEntity{
 	// column role_id sẽ trỏ tới column id của table roles
 	
 	@ManyToMany(fetch = FetchType.EAGER)
+	//Lazy - nó sẽ ko get roles tương ứng của user đó -> nếu muốn get thì phải dùng phương thức user.getRole
+	// EAGER - khi get user nó sẽ get tất cả roles của user đó
 	@JoinTable(name = "users_roles", 
 	joinColumns = @JoinColumn(name = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "role_id"))

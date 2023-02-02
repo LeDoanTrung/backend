@@ -18,13 +18,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	
-	@Bean
+	@Bean  // @Bean đi chung với @Configuration và sẽ có 1 thg khác Autowired lại
 	public UserDetailsService userDetailsService() {
 		return new ShoppingUserDetailsService();
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public PasswordEncoder passwordEncoder() { //mã hóa
 		return new BCryptPasswordEncoder();
 	}
 	
@@ -41,22 +41,31 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		auth.authenticationProvider(authenticationProvider());
 	}
 	
-	@Override
+	@Override  // cho trang html
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests()
-		.antMatchers("/users/**").hasAuthority("Admin")
-		.anyRequest().authenticated()
+		//.antMatchers("/users/**","/categories/**")
+		.antMatchers("/users/**").hasAuthority("Admin") // phân quyền - muốn truy cập các đường dẫn "users/" 
+		//.anyRequest().permitAll()  - vào ko cần xác thực
+		.anyRequest().authenticated() // tất cả các request đều phải log in
 		.and()
 		.formLogin()
-			.loginPage("/login")
-			.usernameParameter("email") // thay username bang email
-			.permitAll();
-		
+			.loginPage("/login") // đường dẫn @GetMapping
+			.usernameParameter("email") // thay username bang email => giống name bên html name ="email"
+			//.passwordParameter() ko cần ghi vì trùng name bên html
+			.permitAll()
+		.and().logout().permitAll()
+		.and()
+			.rememberMe()
+				.key("Abc_123") // Restart app no need login again
+				.tokenValiditySeconds(7 * 24 * 60 *60);// thời gian hết hạn là 7 ngày
 	}
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
+		// Dùng để hiện thỉ hình, vì chưa login vào sẽ ko truy cập được các resource static,
+		// dòng code này giúp mình truy cập được
 		web.ignoring().antMatchers("/images/**","/js/**","/webjars/**");
 	}
 }
