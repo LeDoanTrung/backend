@@ -1,4 +1,6 @@
 //file này có thể sử dụng trực tiếp những biến, thẻ bên user_form.html
+//.ready se duoc chay dau tien khi load 1 page
+// cac event onclick onchange se duoc viet trong .ready
 $(document).ready(function() {
 	$("#buttonCancel").on("click", function() {
 		window.location = moduleURL;//moduleURL = "[[@{/users}]]" -->khai báo bên user_form.html

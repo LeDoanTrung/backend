@@ -69,9 +69,9 @@ public class AccountController {
 		String photoUpdate = user.getPhotos();
 		userDetails.setPhotos(photoUpdate);
 		
-		redirectAttributes.addAttribute("message", "Your account has been updated successfully");
+		redirectAttributes.addFlashAttribute("message", "Your account has been updated successfully.");
 		
-		return "index";
+		return "redirect:/account";
 		
 		//redirect sẽ trả về một thằng getMapping. Nếu chỉ để return "redirect:/"; 
 		//thì nó trả về trang mặc định
