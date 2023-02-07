@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.shoppingcart.admin.entity.User;
 import com.shoppingcart.admin.user.UserRepository;
 
+@Service
 public class ShoppingUserDetailsService implements UserDetailsService{
 
 	@Autowired
@@ -22,5 +24,7 @@ public class ShoppingUserDetailsService implements UserDetailsService{
 		}
 		throw new UsernameNotFoundException("Could not find user with email: "+ email);
 	}
+	
+	
 
 }

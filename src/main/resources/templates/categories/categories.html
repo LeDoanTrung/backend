@@ -15,9 +15,7 @@
             <a th:href="@{/categories/export/pdf}"  class="fas fa-file-pdf fa-2x icon-dark"></a>
         </div>
     
-        <div th:if="${message != null}" class="alert alert-success text-center">
-            [[${message}]]
-        </div>
+       
 
         <div th:replace="fragments :: search_form_and_message('/categories')" />
 

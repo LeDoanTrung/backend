@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head th:replace="fragments :: page_head('Home - Shopping Cart Admin','none')"/>
 <body>
     <div class="container-fluid">
@@ -8,9 +9,14 @@
         <div>
             <h2>Shopping Cart Control Panel</h2>
         </div>
+        
+        <div style="display: flex; font-size: larger;" th:object="${user}">
+             <p>Welcome <a th:href="@{/account}" sec:authentication="principal.fullName"></a></p>
+             &nbsp;
+             <p sec:authentication="principal.Roles"></p>
+             <p style="display: none;" sec:authentication="principal.username"></p>
+        </div>
     </div>
-
-
 
     <div th:replace="fragments :: footer"></div>
 </body>

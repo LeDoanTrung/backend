@@ -78,10 +78,20 @@ public class ShoppingUserDetails implements UserDetails{
 	}
 	
 	public void setLastName(String lastName) {
-		this.user.setFirstName(lastName);
+		this.user.setLastName(lastName);
 	}
 	
 	public boolean hasRole(String roleName) {
 		return user.hasRole(roleName);
 	}
+	
+	public Set<Role> getRoles() {
+		Set<Role> roles = user.getRoles();
+		return roles;
+	}
+
+	public void setPhotos(String fileName) {
+		 this.user.setPhotos(fileName);
+	}
+	
 }

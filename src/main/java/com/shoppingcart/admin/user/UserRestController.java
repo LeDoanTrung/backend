@@ -1,4 +1,4 @@
-package com.shoppingcart.admin.user.controller;
+package com.shoppingcart.admin.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

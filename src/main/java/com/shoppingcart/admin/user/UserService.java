@@ -117,4 +117,32 @@ public class UserService {
 		String encodePassword = passwordEncoder.encode(user.getPassword());
 		user.setPassword(encodePassword);
 	}
+	
+	public User getUserByEmail(String email) throws UserNotFoundException{
+		try {
+			return this.userRepo.getUserByEmail(email);
+		}
+		catch (NoSuchElementException ex) {
+			throw new UserNotFoundException("Could not find any user with Email "+ email);
+		}
+	}
+	
+	
+	public User updateAccount(User userInform) {
+		User userInDB = userRepo.findById(userInform.getId()).get(); // do get user bằng email nên phải gắn từng giá trị
+		
+		if (!userInform.getPassword().isEmpty()) {
+			userInDB.setPassword(userInform.getPassword());
+			encodePassword(userInDB);
+		}
+		
+		if (userInform.getPhotos()!=null) {
+			userInDB.setPhotos(userInform.getPhotos());
+		}
+		
+		userInDB.setFirstName(userInform.getFirstName());
+		userInDB.setLastName(userInform.getLastName());
+		
+		return userRepo.save(userInDB);
+	}
 }

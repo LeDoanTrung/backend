@@ -30,6 +30,10 @@ import com.shoppingcart.admin.entity.User;
 	public void updateEnabledStatus(boolean enabled, Integer Id);
 
 
-	@Query("SELECT u FROM User u Where u.firstName LIKE %?1% OR u.lastName LIKE %?1% OR u.email LIKE %?1%")
+	//@Query("SELECT u FROM User u Where u.firstName LIKE %?1% OR u.lastName LIKE %?1% OR u.email LIKE %?1%")
+	@Query("SELECT u FROM User u Where CONCAT(u.id,' ',u.email,' ',u.firstName,' ',"+" u.lastName) LIKE %?1%")
 	public Page<User> findAll(String keyword, Pageable pageable);
+	
+	
+	
 }

@@ -23,28 +23,22 @@
     thymeleaf fragment
     tag: xóa thẻ bên ngoài(dưới ví dụ này là thẻ th), none: giữ thẻ bên ngoài -->
     <th th:fragment="column_link(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
-        <a class="text-white" th:if="${sortField != fieldName}"  
-        th:href="@{'/users/page/'+${currentPage}+ '?sortField='+ ${fieldName} + '&sortDir=' +${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+        <a class="text-white"   
+        th:href="@{'/users/page/'+${currentPage}+ '?sortField='+ ${fieldName} + '&sortDir=' +${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
         [[${columnLabel}]]
         </a>
-        <a class="text-white" th:if="${sortField == fieldName}"  
-        th:href="@{'/users/page/'+${currentPage}+ '?sortField=' + ${fieldName} + '&sortDir=' +${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
-        [[${columnLabel}]]
-        </a>
+        
         <span th:if="${sortField == fieldName}"
                 th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
         </span>
     </th>
 
     <th th:fragment="column_link2(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
-        <a class="text-dark" th:if="${sortField != fieldName}"  
-        th:href="@{'/categories/page/'+${currentPage}+ '?sortField='+ ${fieldName} + '&sortDir=' +${sortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+        <a class="text-dark"   
+        th:href="@{'/categories/page/'+${currentPage}+ '?sortField='+ ${fieldName} + '&sortDir=' +${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
         [[${columnLabel}]]
         </a>
-        <a class="text-dark" th:if="${sortField == fieldName}"  
-        th:href="@{'/categories/page/'+${currentPage}+ '?sortField=' + ${fieldName} + '&sortDir=' +${reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
-        [[${columnLabel}]]
-        </a>
+
         <span th:if="${sortField == fieldName}"
                 th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
         </span>
@@ -70,6 +64,7 @@
         <div th:if="${message != null}" class="alert alert-success text-center">
             [[${message}]]
         </div>
+        
     </div>
  
     <!-- <div th:fragment="search_form_and_message2()">
@@ -133,24 +128,24 @@
 
                 <ul class="pagination justify-content-center flex-wrap"> <!-- flex-wrap để xuống dòng khi màn hình nhỏ -->
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{${entityLink}+'/page/1?sortField=' +${sortField} + '&sortDir=' +${sortDir}}">First</a>
+                        <a th:replace="fragments :: page_link(${entityLink} ,1, 'First')"></a>
                     </li>
 
                     <li th:class="${currentPage > 1 ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{${entityLink}+'/page/' + ${currentPage - 1}+ '?sortField=' +${sortField} + '&sortDir=' +${sortDir}}">Previous</a>
+                        <a th:replace="fragments :: page_link(${entityLink},${currentPage - 1}, 'Previous')"></a>
                     </li>
 
                     <li th:class="${currentPage != i ? 'pageItem' : 'page-item active'}"
                         th:each="i : ${#numbers.sequence(1, totalPages)}"> <!-- number.sequence của thymleaf-->
-                        <a class="page-link" th:href="@{${entityLink}+'/page/' + ${i} + '?sortField=' +${sortField} + '&sortDir=' +${sortDir}}">[[${i}]]</a>
+                        <a th:replace="fragments :: page_link(${entityLink},${i}, ${i})"></a>
                     </li>
 
                     <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{${entityLink}+'/page/' + ${currentPage + 1} + '?sortField=' +${sortField} + '&sortDir=' +${sortDir}}">Next</a>
+                        <a th:replace="fragments :: page_link(${entityLink},${currentPage + 1}, 'Next')"></a>
                     </li>
 
                     <li th:class="${currentPage < totalPages ? 'page-item' : 'page-item disabled'}">
-                        <a class="page-link" th:href="@{${entityLink}+'/page/' + ${totalPages} + '?sortField=' +${sortField} + '&sortDir=' +${sortDir}}">Last</a>
+                       <a th:replace="fragments :: page_link(${entityLink},${totalPages}, 'Last')"></a>
                     </li>
                 </ul>
             </nav>
@@ -160,5 +155,12 @@
     <div th:fragment="footer" class="text-center m3 ">
         <p>Shopping Cart Control Panel - Coppyright &copy; ShoppingCart</p>
     </div>
+
+
+    <a th:fragment="page_link(moduleURL,pageNum, label)" class="page-link"
+    th:href="@{${moduleURL}+'/page/'+${pageNum}+ '?sortField='+${sortField}+'&sortDir=' +${sortDir} + 
+    ${keyword!=null ? '&keyword=' + keyword: ''}}">[[${label}]]</a>
+
+    
 </body>
 </html>

@@ -13,9 +13,7 @@
             <a th:href="@{/users/export/pdf}"  class="fas fa-file-pdf fa-2x icon-dark"></a>
         </div>
 
-        <div th:if="${message != null}" class="alert alert-success text-center">
-            [[${message}]]
-        </div>
+        
 
         <!--/users/page/1?sortField=firstName&sortDir=asc@keyword=bruce-->
         <!-- name của input sẽ thành các param trên đường dẫn -->
@@ -82,20 +80,20 @@
             <div class="row m-1" th:each="user : ${listUsers}">
 
                 <div class="col-4">
-                    <img th:src="@{/images/default-user.png}" width="50px" alt="">
+                    <div th:replace="fragments :: user_photos"/>
                 </div>
 
                 <div class="col-8">
                     <div > [[${user.fullName}]]</div>
                     <div > [[${user.roles}]]</div>
                     <div class="mt-2">
-                        <a th:if="${user.enabled == true}" class="fas fa-check-circle fa-2x icon-green" th:href="@{'/users/' + ${user.id} + '/enabled/false'}" th:tittle="'Disable this ' + 'user'"></a>
-                        <a th:if="${user.enabled == false}"  th:href="@{'/users/' + ${user.id} + '/enabled/true'}" th:tittle="'Enabled this ' + 'user'"  class="fas fa-circle fa-2x icon-dark"></a>
+                        <div th:replace="fragments :: status(${user.enabled}, 'users', '/users/'+${user.id})" />
                         &nbsp;
-                        <a th:href="@{'/users/edit/' + ${user.id}}" th:tittle="'Edit this' + 'user'" class="fas fa-edit fa-2x icon-green"></a>
-                        &nbsp;&nbsp;
-                        <a th:href="@{'/users/delete/' + ${user.id}}" th:entityId="${user.id}" th:tittle="'Delete this' + 'user'" class="fas fa-trash fa-2x icon-dark link-delete"></a>
+                        <div th:replace="fragments :: edit('user', '/users/edit/' + ${user.id})" />
+                        &nbsp;
+                        <div th:replace="fragments :: delete('user', ${user.id},'/users/delete/' + ${user.id})" />
                     </div>
+                    <div>&nbsp;</div>
                 </div>  
             </div>
         </div>
@@ -107,6 +105,7 @@
 
 
         <div th:replace="fragments :: footer"></div>
+
       
    </div>
    <script th:src="@{/js/common_list.js}"></script>

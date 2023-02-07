@@ -1,10 +1,10 @@
-package com.shoppingcart.admin.user.controller;
+package com.shoppingcart.admin.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.shoppingcart.admin.user.CategoryService;
+
 import com.shoppingcart.admin.user.UserService;
 
 @RestController

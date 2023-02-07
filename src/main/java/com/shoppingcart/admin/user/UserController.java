@@ -1,4 +1,4 @@
-package com.shoppingcart.admin.controller;
+package com.shoppingcart.admin.user;
 
 import java.io.IOException;
 import java.util.List;
@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shoppingcart.admin.entity.User;
+import com.shoppingcart.admin.security.ShoppingUserDetailsService;
 import com.shoppingcart.admin.FileUploadUtil;
 import com.shoppingcart.admin.entity.Role;
 import com.shoppingcart.admin.user.UserService;
@@ -33,6 +34,7 @@ public class UserController {
 	@Autowired
 	private UserService service;
 	
+
 	@GetMapping("/users")
 	public String listFirstPage(Model model) {
 //		List<User> listUserss = service.listAll();
@@ -76,11 +78,19 @@ public class UserController {
 		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully.");
 		
 		
-		return "redirect:/users";
+		return getRedirectURLtoAffectedUser(user);
 		
 		//redirect sẽ trả về một thằng getMapping. Nếu chỉ để return "redirect:/"; 
 		//thì nó trả về trang mặc định
 	}
+	
+	private String getRedirectURLtoAffectedUser(User user) {
+		String firstPartOfEmail = user.getEmail().split("@")[0];
+		
+		return "redirect:/users/page/1?sortField=id&sortDir=asc&keyword=" +firstPartOfEmail;
+	}
+	
+	private String defaultRedirectURL = "redirect:/users/page/1?sortField=firstName&sortDir=asc" ;
 	
 	@GetMapping("/users/edit/{id}")
 	public String editUser(@PathVariable(name= "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
@@ -95,12 +105,12 @@ public class UserController {
 		}
 		catch (UserNotFoundException ex) {
 			redirectAttributes.addFlashAttribute("message",ex.getMessage());
-			return "redirect:/users";
+			return defaultRedirectURL ;
 		}
 	}
 	
 	@GetMapping("/users/delete/{id}")
-	public String deleteUser(@PathVariable(name= "id") Integer id, RedirectAttributes redirectAttributes) {
+	public String deleteUser(@PathVariable(name= "id") Integer id,Model model, RedirectAttributes redirectAttributes) {
 		try {
 		service.delete(id);
 		String userPhotoDir ="user-photos/" + id;
@@ -112,7 +122,7 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("message",ex.getMessage());
 			
 		}
-		return "redirect:/users";
+		return defaultRedirectURL ;
 	}
 	
 //	Cách 1:
@@ -133,13 +143,13 @@ public class UserController {
 //	}
 	
 	@GetMapping("/users/{id}/enabled/{status}")
-	public String updateUserEnabledStatus(@PathVariable(name= "id") Integer id, RedirectAttributes redirectAttributes, @PathVariable(name= "status") boolean enabled) {
+	public String updateUserEnabledStatus(@PathVariable(name= "id") Integer id, Model model, RedirectAttributes redirectAttributes, @PathVariable(name= "status") boolean enabled) {
 		
 		service.updateUserEnabledStatus(id, enabled);
 		String status = enabled ? "enabled" : "disabled";
 		String message = "The User ID " + id + " has been " + status;
 		redirectAttributes.addFlashAttribute("message",message);
-		return "redirect:/users";
+		return defaultRedirectURL;
 	}
 	
 	
@@ -198,4 +208,6 @@ public class UserController {
 	}
 	
 	//authentication - xác thực - login(username/
+	
+	
 }

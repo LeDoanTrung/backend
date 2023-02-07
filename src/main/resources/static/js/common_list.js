@@ -6,3 +6,7 @@ function showDeleteConfirmModal(link, entityName) {
 
     $("#confirmModal").modal();
 }
+
+function clearFilter () {
+    window.location = moduleURL;
+}
