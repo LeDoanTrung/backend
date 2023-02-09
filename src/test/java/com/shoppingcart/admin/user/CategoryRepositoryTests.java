@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.sym.Name;
 import com.shoppingcart.admin.category.CategoryRepository;
 import com.shoppingcart.admin.entity.Category;
 
-@DataJpaTest 
+@DataJpaTest (showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 @Rollback (false)
 public class CategoryRepositoryTests {
@@ -29,7 +29,8 @@ public class CategoryRepositoryTests {
 	CategoryRepository repository;
 	
 	
-	
+	@Autowired
+	TestEntityManager entityManager;
 	
 	
 	@Test
@@ -86,29 +87,18 @@ public class CategoryRepositoryTests {
 		repository.save(b2);
 	}
 	
-	@Test
-	public void testCreateRootCategory() {
-		Scanner scan = new Scanner(System.in);
-		System.out.println("Input Parent: ");
-		String name = scan.next();
-		
-		switch (name) {
-		case "Computers":
-			Category category = repository.getCategoryByName(name);
-			Set <Category> set = category.getChildren();
-			int level =1;
-			PrintChild( set, level);
-			break;
-		default:
-			break;
-		}
-		
-		
-	}
+
 	
 	
 	 
-	
+	@Test
+	public void testCreateRootCategory() {
+		Category computers = entityManager.find(Category.class, 1);
+		System.out.println(computers.getName());
+		int level =1;
+		PrintChild(computers.getChildren(), level);
+		
+	}
 	public void PrintChild( Set <Category> set, int level) {
 		   if(set == null) {
 		      return ;
