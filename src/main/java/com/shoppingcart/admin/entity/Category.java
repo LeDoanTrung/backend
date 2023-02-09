@@ -3,10 +3,18 @@ package com.shoppingcart.admin.entity;
 
 
 import java.beans.Transient;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.core.sym.Name;
 
 @Entity
 @Table(name="categories")
@@ -20,6 +28,42 @@ public class Category extends IdBaseEntity{
 	@Column(length = 128)
 	private String image;
 	
+	
+	@OneToOne
+	@JoinColumn(name = "parent_id")
+	private Category parent;
+	
+	@OneToMany(mappedBy = "parent")
+	@OrderBy("name asc")
+	private Set<Category> children = new HashSet<>();
+	
+	
+	public Category(String name) {
+		this.name = name;
+		this.alias = name;
+		this.image = "default.png";
+	}
+	
+	public Category (String name, Category parent) {
+		this(name);
+		this.parent= parent;
+	}
+	public Category getParent() {
+		return parent;
+	}
+
+	public void setParent(Category parent) {
+		this.parent = parent;
+	}
+
+	public Set<Category> getChildren() {
+		return children;
+	}
+
+	public void setChildren(Set<Category> children) {
+		this.children = children;
+	}
+
 	private boolean enabled;
 
 	public String getName() {

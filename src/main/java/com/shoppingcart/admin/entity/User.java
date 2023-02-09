@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 // Tạo entity "User" tương ứng với table users
 // Nếu ko khai báo name của @Entity hoặc @Table thì nó lấy tên class đặt làm tên của @Entity và @Table
@@ -46,13 +47,18 @@ public class User extends IdBaseEntity{
 	@JoinTable(name = "users_roles", 
 	joinColumns = @JoinColumn(name = "user_id"),
 	inverseJoinColumns = @JoinColumn(name = "role_id"))
-	
 	private Set<Role> roles = new HashSet<>();
 	
 	public User() {
 		
 	}
 
+	//1 user có nhiều Role 
+//	@OneToMany(mappedBy = "user123")
+//	private Set<Role> children = new HashSet<>();
+	
+	
+	
 	public User(String email, String password, String firstName, String lastName) {
 		super();
 		this.email = email;

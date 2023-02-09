@@ -3,6 +3,7 @@ package com.shoppingcart.admin.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 //com.model Vehicle
@@ -29,6 +30,10 @@ public class Role extends IdBaseEntity{
 		super();
 		this.name = name;
 	}
+	
+//	@ManyToOne
+//	private User user123;
+	
 	
 	public Role() {
 		

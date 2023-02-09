@@ -94,9 +94,9 @@
         <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" alt="" style="width: 100px;">
     </div>
 
-    <div th:fragment="categories_image" th:remove="tag">
-        <span th:if="${categories.image == null}" class="fa fa-portait fa-3x icon-silver"></span>
-        <img th:if="${categories.image != null}" th:src="@{${categories.photosImagePath}}" alt="" style="width: 100px;">
+    <div th:fragment="category_image" th:remove="tag">
+        <span th:if="${category.image == null}" class="fa fa-portait fa-3x icon-silver"></span>
+        <img th:if="${category.image != null}" th:src="@{${category.photosImagePath}}" alt="" style="width: 100px;">
     </div>
 
     <div th:fragment="status(enabled,entityName, entityURL)" th:remove="tag">
