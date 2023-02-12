@@ -69,7 +69,7 @@
                         <td>
                             <div th:replace="fragments :: edit('user', '/users/edit/' + ${user.id})" />
                             &nbsp;&nbsp;
-                            <div th:replace="fragments :: delete('user', ${user.id},'/users/delete/' + ${user.id})" />
+                            <div th:replace="fragments :: delete('user', ${user.id},'/users/delete/' + ${user.id}, true)" />
                         </td>
                     </tr>
                 </tbody>
@@ -91,7 +91,7 @@
                         &nbsp;
                         <div th:replace="fragments :: edit('user', '/users/edit/' + ${user.id})" />
                         &nbsp;
-                        <div th:replace="fragments :: delete('user', ${user.id},'/users/delete/' + ${user.id})" />
+                        <div th:replace="fragments :: delete('user', ${user.id},'/users/delete/' + ${user.id}, true)" />
                     </div>
                     <div>&nbsp;</div>
                 </div>  

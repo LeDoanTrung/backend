@@ -2,7 +2,7 @@ package com.shoppingcart.admin.entity;
 
 
 
-import java.beans.Transient;
+import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.core.sym.Name;
+
 
 @Entity
 @Table(name="categories")
@@ -51,11 +51,16 @@ public class Category extends IdBaseEntity{
 	public Category getParent() {
 		return parent;
 	}
-
+	
+    public String getParentName() {
+		return this.parent.getName();
+	}
+    
 	public void setParent(Category parent) {
 		this.parent = parent;
 	}
-
+	
+	
 	public Set<Category> getChildren() {
 		return children;
 	}
@@ -121,5 +126,53 @@ public class Category extends IdBaseEntity{
 		
 		return "/category-photos/" + this.id + "/"+ this.image;
 	}
+
+	public static Category copyIdAndName(Category category) {
+		Category copyCategory = new Category();
+		copyCategory.setId(category.getId());
+		copyCategory.setName(category.getName());
+		return copyCategory;
+	}
+	
+	public static Category copyIdAndName(Integer id, String name) {
+		Category copyCategory = new Category();
+		copyCategory.setId(id);
+		copyCategory.setName(name);
+		return copyCategory;
+	}
+
+	public static Category copyFull(Category category) {
+		Category copyCategory = new Category();
+		copyCategory.setId(category.getId());
+		copyCategory.setName(category.getName());
+		copyCategory.setImage(category.getImage());
+		copyCategory.setAlias(category.getAlias());
+		copyCategory.setEnabled(category.isEnabled());
+		copyCategory.setHasChildren(category.getChildren().size() > 0);
+		
+		return copyCategory;
+	}
+	
+	@Transient
+	private boolean hasChildren;
+	
+
+	public boolean isHasChildren() {
+		return hasChildren;
+	}
+
+	public void setHasChildren(boolean hasChildren) {
+		this.hasChildren = hasChildren;
+	}
+
+	public static Category copyFull(Category category, String name) {
+		Category copyCategory = Category.copyFull(category);
+		copyCategory.setName(name);
+		return copyCategory;
+	}
+	
+//	public static Category copyFull() {
+//		
+//	}
 	
 }

@@ -64,7 +64,7 @@
                             <div th:replace="fragments :: edit('categories', '/categories/edit/' + ${category.id})" />
     
                             &nbsp;&nbsp;
-                            <div th:replace="fragments :: delete('categories', ${category.id},'/categories/delete/' + ${category.id})" />
+                            <div th:replace="fragments :: delete('categories', ${category.id},'/categories/delete/' + ${category.id}, ${!category.hasChildren})" />
                         </td>
                     </tr>
                 </tbody>
@@ -82,24 +82,13 @@
                     <div>[[${category.name}]]</div>
                     <div>[[${category.alias}]]</div>
                     <div class="mt-2">
-                        <a th:if="${category.enabled == true}" class="fas fa-check-circle fa-2x icon-green"
-                        th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
-                        th:title="'Disable this '+'category'"></a>
-        
-                        <a th:if="${category.enabled == false}" class="fas fa-circle fa-2x icon-dark"
-                        th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
-                        th:title="'Enable this '+'category'"></a>
+                        <div th:replace="fragments :: status(${category.enabled}, 'categories', '/categories/'+${category.id})" />
         
                         &nbsp;
-                        <a th:href="@{'/categories/edit/' +${category.id}}"
-                        class="fas fa-edit fa-2x icon-green"
-                        th:title ="'Edit this ' + 'category'"></a>
+                        <div th:replace="fragments :: edit('categories', '/categories/edit/' + ${category.id})" />
         
                         &nbsp;
-                        <a class="fas fa-trash fa-2x icon-dark link-delete"
-                        th:href="@{'/categories/delete/' +${category.id}}"
-                        th:entityId="${category.id}"
-                        th:title="'Delete this '+ 'category'"></a>
+                        <div th:replace="fragments :: delete('categories', ${category.id},'/categories/delete/' + ${category.id}, ${!category.hasChildren})" />
                     </div>
                 </div>
                

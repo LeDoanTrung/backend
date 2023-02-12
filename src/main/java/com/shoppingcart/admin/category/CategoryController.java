@@ -1,7 +1,10 @@
 package com.shoppingcart.admin.category;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,9 +45,31 @@ public class CategoryController {
 		return listByPage(1, model, "name", "asc", null);
 	}
 	
+	//Tu lam 
+//	@GetMapping("/categories/new")
+//	public String createNew(Model model) {
+//		
+//		Category computer = service.getCategory();
+//		Set<Category> set = computer.getChildren();
+//		if (service.checkParent(set)) {
+//			service.setChildren(computer.getChildren(), "--");
+//		}
+//		List<Category> listCategory = service.listCategories();
+//		Category category = new Category();
+//		model.addAttribute("listCategory", listCategory);
+//		model.addAttribute("category", category);
+//		model.addAttribute("pageTitle", "Create Category");
+//		
+//		return "categories/categories_form";
+//	}
+	
+	//Cach cua thay
 	@GetMapping("/categories/new")
 	public String createNew(Model model) {
+		
+		List<Category> listCategories = service.listCategoriesUsedInForm();
 		Category category = new Category();
+		model.addAttribute("listCategories", listCategories);
 		model.addAttribute("category", category);
 		model.addAttribute("pageTitle", "Create Category");
 		
@@ -78,6 +103,8 @@ public class CategoryController {
 	@GetMapping("/categories/edit/{id}")
 	public String editCategory ( Model model, RedirectAttributes redirectAttributes, @PathVariable(name="id") Integer id) {
 		try {
+			List<Category> listCategory = service.listCategoriesUsedInForm();
+			model.addAttribute("listCategory", listCategory);
 			Category category = service.get(id);
 			model.addAttribute("category", category);
 			model.addAttribute("pageTitle", "Edit Category (ID: " + id +")");
@@ -121,26 +148,30 @@ public class CategoryController {
 			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
 			@Param("keyword") String keyword) {
 		
-		System.out.println("Sort Field:" + sortField);
+		
+		if (sortDir == null || sortDir.isEmpty()) {
+			sortDir="asc";
+		}
+		System.err.println("Sort Field:" + sortField);
 		System.err.println("Sort Dir:"+sortDir);
 		
-		Page<Category> page = service.listByPage(pageNum,sortField,sortDir, keyword);
-		List<Category> categories = page.getContent();
+		CategoryPageInfo pageInfo = new CategoryPageInfo();
+		List<Category> listCategories = service.listByPage(pageInfo, pageNum, sortDir, keyword);
 		
-		long startCount = (pageNum-1)*service.CATEGORY_PER_PAGE+1;
-		long endCount = startCount + service.CATEGORY_PER_PAGE -1;
+		long startCount = (pageNum-1)*service.ROOT_CATEGORY_PER_PAGE+1;
+		long endCount = startCount + service.ROOT_CATEGORY_PER_PAGE -1;
 		
-		if (endCount > page.getTotalElements()) {
-			endCount = page.getTotalElements();
+		if (endCount > pageInfo.getTotalElements()) {
+			endCount = pageInfo.getTotalElements();
 		}
 		
 		String reverseSortDir = sortDir.equals("asc") ? "desc" : "asc";
 		
 		model.addAttribute("startCount", startCount);
 		model.addAttribute("endCount", endCount);
-		model.addAttribute("listCategories", categories);
-		model.addAttribute("totalItems", page.getTotalElements());
-		model.addAttribute("totalPages", page.getTotalPages());
+		model.addAttribute("listCategories", listCategories);
+		model.addAttribute("totalItems", pageInfo.getTotalElements());
+		model.addAttribute("totalPages", pageInfo.getTotalPages());
 		model.addAttribute("currentPage", pageNum);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("sortField", sortField);
