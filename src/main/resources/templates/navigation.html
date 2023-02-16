@@ -28,13 +28,25 @@
                         </li>
                     </th:block>
 
-                        <th:block sec:authorize = "hasAnyAuthority('Admin','Editor')">
+                     <th:block sec:authorize = "hasAnyAuthority('Admin','Editor')">
+                        
+                        <li class="nav-item dropdown">
+                             <a class="nav-link dropdown-toggle" data-toggle="dropdown" th:href="@{/categories}">Categories</a>
+                            <div class="dropdown-menu">
+                                  <a  class="dropdown-item" th:href="@{/categories/new}">Create New</a>
+                                 <a  class="dropdown-item" th:href="@{/categories/}">View All</a>
+                             </div>
+                        </li>
+                        
+                    </th:block>
+
+                    <th:block sec:authorize = "hasAnyAuthority('Admin','Editor')">
                         
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" th:href="@{/categories}">Categories</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" th:href="@{/brands}">Brands</a>
                                 <div class="dropdown-menu">
-                                    <a  class="dropdown-item" th:href="@{/categories/new}">Create New</a>
-                                    <a  class="dropdown-item" th:href="@{/categories/}">View All</a>
+                                    <a  class="dropdown-item" th:href="@{/brands/new}">Create New</a>
+                                    <a  class="dropdown-item" th:href="@{/brands/}">View All</a>
                                 </div>
                             </li>
                         

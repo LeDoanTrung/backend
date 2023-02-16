@@ -124,7 +124,7 @@ public class Category extends IdBaseEntity{
 	public String getPhotosImagePath() {
 		if (id == null || image == null ) return "/images/image-thumbnail.png"; //nếu ko có image thì hiển thị
 		
-		return "/category-photos/" + this.id + "/"+ this.image;
+		return "/categories-images/" + this.id + "/"+ this.image;
 	}
 
 	public static Category copyIdAndName(Category category) {
@@ -171,8 +171,6 @@ public class Category extends IdBaseEntity{
 		return copyCategory;
 	}
 	
-//	public static Category copyFull() {
-//		
-//	}
+
 	
 }

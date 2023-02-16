@@ -32,7 +32,7 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	@Query("SELECT u FROM Category u WHERE u.name LIKE %?1% OR u.alias LIKE %?1%" )
 	public Page<Category> findAll(String keyword, Pageable pageable);
 
-	@Query("SELECT u FROM Category u WHERE u.parent.id is NULL")
+	@Query("SELECT u FROM Category u WHERE u.parent.id is NULL") // parent_id
 	public List<Category> findRootCategories(Sort sort);
 
 	@Query("SELECT u FROM Category u WHERE u.parent.id is NULL")
@@ -41,4 +41,8 @@ public interface CategoryRepository extends PagingAndSortingRepository<Category,
 	@Query("SELECT u FROM Category u WHERE u.name LIKE %?1%")
 	public Page<Category> search(String keyword, Pageable pageable);
 	
+	
+	public Category findByName(String name); 
+		
+	public Category findByAlias(String alias);
 }

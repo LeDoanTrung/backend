@@ -44,6 +44,17 @@
         </span>
     </th>
 
+    <th th:fragment="column_link3(fieldName, columnLabel, removeTag)" th:remove="${removeTag}">
+        <a class="text-white"   
+        th:href="@{'/brands/page/'+${currentPage}+ '?sortField='+ ${fieldName} + '&sortDir=' +${sortField != fieldName ? sortDir : reverseSortDir} + ${keyword != null ? '&keyword=' + keyword : ''}}">
+        [[${columnLabel}]]
+        </a>
+        
+        <span th:if="${sortField == fieldName}"
+                th:class="${sortDir == 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down'}">
+        </span>
+    </th>
+
     <div th:fragment="search_form_and_message(entity)">
         <form th:action="@{${entity}+'/page/1'}" class="form-inline m-3">
             <input type="hidden" name="sortField" th:value="${sortField}" />
@@ -94,9 +105,13 @@
         <img th:if="${user.photos != null}" th:src="@{${user.photosImagePath}}" alt="" style="width: 100px;">
     </div>
 
+    <div th:fragment="brand_logos" th:remove="tag">
+        <span th:if="${brand.logos == null}" class="fa fa-portait fa-3x icon-silver"></span>
+        <img th:if="${brand.logos != null}" th:src="@{${brand.photosImagePath}}" alt="" style="width: 100px;">
+    </div>
+
     <div th:fragment="category_image" th:remove="tag">
-        <span th:if="${category.image == null}" class="fa fa-portait fa-3x icon-silver"></span>
-        <img th:if="${category.image != null}" th:src="@{${category.photosImagePath}}" alt="" style="width: 100px;">
+        <img th:src="@{${category.photosImagePath}}" alt="" style="width: 100px;">
     </div>
 
     <div th:fragment="status(enabled,entityName, entityURL)" th:remove="tag">

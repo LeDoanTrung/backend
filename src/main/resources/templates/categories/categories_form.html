@@ -98,16 +98,17 @@
         MAX_FILE_SIZE = 502400;
         moduleURL = "[[@{/categories}]]";
         function checkNameUnique(form) {
-            url = "[[@{/categories/check_name}]]";
+            url = "[[@{/categories/check_unique}]]";
 
             categoryName = $("#name").val();
             categoryId = $("#id").val();
-
+            categoryAlias = $("#alias").val();
             // AJAX
             csrfValue = $("input[name='_csrf']").val();
             //
             params = { id: categoryId, 
                        name: categoryName, 
+                       alias: categoryAlias,
                        _csrf : csrfValue};  
 
             
@@ -115,9 +116,12 @@
             $.post(url, params, function(response) {
                 if(response=="OK") {
                     form.submit();
-                } else if (response=="Duplicated") {
+                } else if (response=="DuplicateName") {
                     // alert("There is another user having the email: " + userEmail);
-                    showErrorModal("There is another category having same name: " + categoryName);
+                    showWarningModal("There is another category having same name: " + categoryName);
+                }  else if (response=="DuplicateAlias") {
+                    // alert("There is another user having the email: " + userEmail);
+                    showWarningModal("There is another category having same alias: " + categoryAlias);
                 } else {
                     // alert("Unknown response from server");
                     showErrorModal("Unknown response from server");

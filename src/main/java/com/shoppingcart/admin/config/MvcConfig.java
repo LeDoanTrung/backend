@@ -15,7 +15,8 @@ public class MvcConfig implements WebMvcConfigurer{
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		exposeDirectory("user-photos", registry);
-		exposeDirectory("category-photos", registry);
+		exposeDirectory("categories-images", registry);
+		exposeDirectory("brand-logos", registry);
 	}
 	
 	
@@ -28,7 +29,6 @@ public class MvcConfig implements WebMvcConfigurer{
 		String logicalPath = pathPattern + "/**";//user-photos/**
 		
 		registry.addResourceHandler(logicalPath).addResourceLocations("file:/"+absolutePath+"/");
-		
 		
 	}
 }

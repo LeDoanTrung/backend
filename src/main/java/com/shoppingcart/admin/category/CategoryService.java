@@ -1,14 +1,18 @@
 package com.shoppingcart.admin.category;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.transaction.Transactional;
 
+import org.apache.logging.log4j.message.ReusableMessage;
 import org.apache.poi.poifs.property.Parent;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,23 +64,23 @@ public class CategoryService {
 		cateRepo.updateEnabledStatus(enabled, id);
 	}
 	
-	public boolean isNameUnique (Integer id, String name) {
-		Category cateByName = cateRepo.getCategoryByName(name);
-		
-		if(cateByName == null) return true;
-		
-		boolean isCreatingNew = (id == null);
-		
-		if(isCreatingNew) {
-			if (cateByName != null) return false;			
-		}
-		else {
-			if (cateByName.getId() != id) {
-				return false;
-			}
-		}
-		return true;
-	}
+//	public boolean isNameUnique (Integer id, String name) {
+//		Category cateByName = cateRepo.getCategoryByName(name);
+//		
+//		if(cateByName == null) return true;
+//		
+//		boolean isCreatingNew = (id == null);
+//		
+//		if(isCreatingNew) {
+//			if (cateByName != null) return false;			
+//		}
+//		else {
+//			if (cateByName.getId() != id) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 	
 	public List<Category> listByPage(CategoryPageInfo pageInfo, int pageNum,  String sortDir,
 			String keyword){
@@ -106,29 +110,29 @@ public class CategoryService {
 			return searchResult;
 		}
 		else {
-			return listHierachicalCategories(rootCategories);
+			return listHierachicalCategories(rootCategories, sortDir);
 		}
 	}
 	
-	private List<Category> listHierachicalCategories(List<Category> rootCategories) {
+	private List<Category> listHierachicalCategories(List<Category> rootCategories, String sortDir) {
 		List<Category> hierarchiCategories = new ArrayList<>();
 		
 		for (Category rootCategory : rootCategories) {
 			hierarchiCategories.add(Category.copyFull(rootCategory));
 			
-			Set<Category> children = rootCategory.getChildren();
+			Set<Category> children = sortSubCategories(rootCategory.getChildren(), sortDir);
 			
 			for (Category subCategory : children) {
 				String name ="--"+ subCategory.getName();
 				hierarchiCategories.add(Category.copyFull(subCategory, name));
 				
-				listSubHierachicalCategories(hierarchiCategories, subCategory, 1);
+				listSubHierachicalCategories(hierarchiCategories, subCategory, 1,sortDir);
 			}
 		}
 		return hierarchiCategories;
 	}
 	
-	private void listSubHierachicalCategories(List<Category> hierarchiCategories, Category parent, int sublevel) {
+	private void listSubHierachicalCategories(List<Category> hierarchiCategories, Category parent, int sublevel, String sortDir) {
 
 		Set<Category> children = parent.getChildren();
 		int newSubLevel =sublevel +1;
@@ -143,7 +147,7 @@ public class CategoryService {
 			
 			hierarchiCategories.add(Category.copyFull(subCategory, name));
 			
-			listSubHierachicalCategories(hierarchiCategories, subCategory, newSubLevel);
+			listSubHierachicalCategories(hierarchiCategories, subCategory, newSubLevel, sortDir);
 		}
 		
 	}
@@ -226,5 +230,55 @@ public class CategoryService {
 		   listSubCategoriesUsedInForm(categoriesUsedInform, subCategory, newSubLevel);
 	}
 	
+   }
+   
+   
+   private SortedSet<Category> sortSubCategories(Set<Category> children) {
+	   return sortSubCategories(children,"asc");
+   }
+   
+   private SortedSet<Category> sortSubCategories(Set<Category> children, String sortDir) {
+	
+	   SortedSet<Category> sortedChildren = new TreeSet<>(new Comparator<Category>() {
+		   @Override
+		   public int compare(Category cat1, Category cat2) {
+			   if (sortDir.equals("asc")) {
+				return cat1.getName().compareTo(cat2.getName());
+			} else {
+				return cat2.getName().compareTo(cat1.getName());
+			}
+		   }
+	});
+	   sortedChildren.addAll(children);
+	   
+	   return sortedChildren;
+   }
+   
+   public String checkUnique(Integer id, String name, String alias) {
+	   boolean isCreatingNew = (id == null|| id==0);
+	   
+	   Category categoryByName = cateRepo.getCategoryByName(name);
+	   
+	   if (isCreatingNew) {
+		   if(categoryByName != null) {
+		return "DuplicateName";
+	   } else {
+		Category categoryByAlias = cateRepo.findByAlias(alias);
+		if (categoryByAlias != null) {
+			return "DuplicateAlias";
+		}
+	   }
+   } else { // Đây là edit, đã có ID, trong trường hợp mà thg Cate có name trùng và cùng ID thì nó đang kiểm tra với chính nó
+	   if (categoryByName != null && categoryByName.getId() != id) {
+		   return "DuplicateName";
+	   }
+	   
+	   Category categoryByAlias = cateRepo.findByAlias(alias);
+	   if (categoryByAlias != null && categoryByAlias.getId() != id) {
+		   return "DuplicateAlias";
+	}
+   	}
+	   
+	   return "OK";
    }
 }

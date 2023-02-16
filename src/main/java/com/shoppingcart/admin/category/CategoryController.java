@@ -67,7 +67,7 @@ public class CategoryController {
 	@GetMapping("/categories/new")
 	public String createNew(Model model) {
 		
-		List<Category> listCategories = service.listCategoriesUsedInForm();
+		List<Category> listCategories = service.listCategoriesUsedInForm(); // đổ lên dropdown
 		Category category = new Category();
 		model.addAttribute("listCategories", listCategories);
 		model.addAttribute("category", category);
@@ -84,13 +84,13 @@ public class CategoryController {
 			category.setImage(fileName);
 			Category savedCate = service.save(category);
 			
-			String uploadDir = "category-photos/" + savedCate.getId(); // tạo folder user-photos theo id để lưu hình
+			String uploadDir = "categories-images/" + savedCate.getId(); // tạo folder user-photos theo id để lưu hình
 			
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir,fileName, multipartFile);
 		}
 		else {
-			if (category.getImage().isEmpty()) category.setImage(null); { // nếu ko chọn image thì lưu null
+			if (category.getImage()==null || category.getImage().isEmpty()) category.setImage(null); { // nếu ko chọn image thì lưu null
 				service.save(category);
 			}
 		}
