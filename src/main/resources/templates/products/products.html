@@ -9,9 +9,9 @@
         <div th:replace="navigation :: menu"></div>
 
         <div class="exporter"> 
-            <h2 class="text-center">Manage Brands</h2>
-            <a th:href="@{/brands/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
-            <a th:href="@{/brands/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+            <h2 class="text-center">Manage Products</h2>
+            <a th:href="@{/products/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+            <a th:href="@{/products/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
         </div>
 
         
@@ -22,23 +22,27 @@
         <!-- $ để lấy giá trị từ bên Model -->
         <!-- Method Dạng GET sẽ chuyển các input thành các PARAM sau dấu chấm hỏi trên đường dẫn -->
         
-        <div th:replace="fragments :: search_form_and_message('/brands')" />
+        <div th:replace="fragments :: search_form_and_message('/products')" />
 
         <div class="full-details">
             <table class="table table-bordered table-striped table-hover table-reponsive-xl">
                 <thead class="thead-dark">
                     <tr>
                         <th class="hideable-column">
-                            <th th:replace="fragments :: column_link3('id', 'Brand ID', 'tag')"></th>
+                            <th th:replace="fragments :: column_link4('id', 'Product ID', 'tag')"></th>
                         </th>
 
-                        <th>Logo</th>
+                        <th>Main Image</th>
 
                         <th class="hideable-column">
-                            <th th:replace="fragments :: column_link3('name', 'Name', 'tag')"></th>
+                            <th th:replace="fragments :: column_link4('name', 'Product Name', 'tag')"></th>
                         </th>
                      
-                        <th>Categories</th>
+                        <th>Brands</th>
+
+                        <th>Category</th> 
+
+                        <th th:replace="fragments :: column_link4('enabled', 'Enabled', 'none')"></th>
 
                         <th>
                             <span>Edit</span>
@@ -48,22 +52,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="brand : ${listBrands}">
+                    <tr th:each="product : ${listProducts}">
 
-                        <td class="hideable-column">[[${brand.id}]]</td>
+                        <td class="hideable-column">[[${product.id}]]</td>
                         <td>
-                            <div th:replace="fragments :: brand_logos"/>
+                            <div th:replace="fragments :: product_mainImages"/>
                         </td>
-                        <td class="hideable-column">[[${brand.name}]]</td>
+                        <td class="hideable-column">[[${product.name}]]</td>
+
+                        <td></td>
+                        <td></td>
+
                         <td>
-                            <th:block th:each="category : ${brand.categories}">
+                            <th:block th:each="category : ${product.categories}">
                                 <span class="badge badge-secondary">[[${category.name}]]</span>
                             </th:block>
                         </td>
                         <td>
-                            <div th:replace="fragments :: edit('brand', '/brands/edit/' + ${brand.id})" />
+                            <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
                             &nbsp;&nbsp;
-                            <div th:replace="fragments :: delete('brand', ${brand.id},'/brands/delete/' + ${brand.id}, true)" />
+                            <div th:replace="fragments :: delete('product', ${product.id},'/products/delete/' + ${product.id}, true)" />
                         </td>
                     </tr>
                 </tbody>
@@ -71,19 +79,19 @@
         </div>
 
         <div class="less-details ">
-            <div class="row m-1" th:each="brand : ${listBrands}">
+            <div class="row m-1" th:each="product : ${listProducts}">
 
                 <div class="col-4">
-                    <div th:replace="fragments :: brand_logos"/>
+                    <div th:replace="fragments :: product_mainImages"/>
                 </div>
 
                 <div class="col-8">
-                    <div > [[${brand.name}]]</div>
-                    <div > [[${brand.categories}]]</div>
+                    <div > [[${product.name}]]</div>
+                    <div > [[${product.categories}]]</div>
                     <div class="mt-2">
-                        <div th:replace="fragments :: edit('brand', '/brands/edit/' + ${brand.id})" />
+                        <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
                         &nbsp;&nbsp;
-                        <div th:replace="fragments :: delete('brand', ${brand.id},'/brands/delete/' + ${brand.id}, true)" />
+                        <div th:replace="fragments :: delete('product', ${product.id},'/products/delete/' + ${product.id}, true)" />
                     </div>
                     <div>&nbsp;</div>
             </div>
@@ -95,18 +103,18 @@
 
         <div th:replace="modal_fragments :: modal"></div>
 
-        <div th:replace="fragments :: pagination('brands','/brands')"></div>
+        <div th:replace="fragments :: pagination('products','/products')"></div>
         
         <div th:replace="fragments :: footer"></div>
 </div>
    <script th:src="@{/js/common_list.js}"></script>
    <script type ="text/javascript">
-    moduleURL = "[[@{/brands}]]";
+    moduleURL = "[[@{/products}]]";
 
     $(document).ready(function (){
         $(".link-delete").on("click",function(e){
             e.preventDefault();  //nếu ko có dòng này sẽ gọi user/delete/...
-            showDeleteConfirmModal($(this),"brand");
+            showDeleteConfirmModal($(this),"product");
         });
     });
 

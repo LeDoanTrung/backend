@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -16,7 +17,7 @@ import javax.persistence.JoinTable;
 @Table(name="brands")
 public class Brand extends IdBaseEntity{
 	
-	@Column(length = 128, nullable = false, unique = true)
+	@Column(length = 128, nullable = false)
 	private String logos;
 
 	@Column(length = 45, nullable = false, unique = true)
@@ -38,12 +39,17 @@ public class Brand extends IdBaseEntity{
 		this.logos = logos;
 	}
 	
+	//Nếu ko có table brands_categories thì trên view sẽ ko hiện vì ko ánh xạ
+	// Chỉ tạo joinTable khi có mối quan hệ Many to Many
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "brands_categories", 
 	joinColumns = @JoinColumn(name = "brand_id"),
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
+	@ManyToOne
+	@JoinColumn(name ="product_id")
+	private Product product;
 	
 	public Set<Category> getCategories() {
 		return categories;

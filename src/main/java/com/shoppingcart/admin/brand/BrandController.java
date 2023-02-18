@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.shoppingcart.admin.FileUploadUtil;
+import com.shoppingcart.admin.category.CategoryService;
 import com.shoppingcart.admin.entity.Brand;
 import com.shoppingcart.admin.entity.Category;
 import com.shoppingcart.admin.entity.Role;
@@ -35,6 +36,9 @@ public class BrandController {
 	@Autowired
 	private BrandService service;
 	
+	@Autowired
+	private CategoryService cateService;
+	
 	@GetMapping("/brands")
 	public String listFirstPage(Model model) {
 		
@@ -43,11 +47,11 @@ public class BrandController {
 	
 	@GetMapping("/brands/new")
 	public String createNew (Model model) {
-		List<Category> listCategories = service.listCategories();
+		List<Category> listCategories = cateService.listCategoriesUsedInForm();
 		model.addAttribute("listCategories", listCategories);
 		Brand brand = new Brand();
 		model.addAttribute("brand", brand);
-		model.addAttribute("pageTitle","Create Brand");
+		model.addAttribute("pageTitle","Create New Brand");
 		return "brands/brands_form";
 		
 	}
@@ -86,7 +90,7 @@ public class BrandController {
 	public String editBrand(@PathVariable(name= "id") Integer id, Model model, RedirectAttributes redirectAttributes) {
 		try {
 			Brand brand = service.get(id);
-			List<Category> listCategories = service.listCategories();
+			List<Category> listCategories = cateService.listCategoriesUsedInForm();
 			model.addAttribute("listCategories", listCategories);
 			model.addAttribute("brand", brand);
 			model.addAttribute("pageTitle","Edit Brand (ID: " +id+")");

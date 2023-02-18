@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.shoppingcart.admin.category.CategoryRepository;
 import com.shoppingcart.admin.entity.Brand;
 import com.shoppingcart.admin.entity.Category;
-import com.shoppingcart.admin.entity.Role;
-import com.shoppingcart.admin.entity.User;
-import com.shoppingcart.admin.user.UserNotFoundException;
+
 
 @Service
 @Transactional
@@ -30,7 +28,8 @@ public class BrandService {
 	@Autowired
 	private CategoryRepository cateRepo;
 	
-	public static final int BRANDS_PER_PAGE = 4;
+	
+	public static final int BRANDS_PER_PAGE = 10;
 	
 	public List<Brand> listAll() {
 		return (List<Brand>) brandRepo.findAll(Sort.by("name").ascending());

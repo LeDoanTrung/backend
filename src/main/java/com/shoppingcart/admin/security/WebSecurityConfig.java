@@ -47,6 +47,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		//.antMatchers("/users/**","/categories/**")
 		.antMatchers("/users/**").hasAuthority("Admin") // phân quyền - muốn truy cập các đường dẫn "users/" 
+		.antMatchers("/categories/**").hasAnyAuthority("Admin","Editor")
+		.antMatchers("/brand/**").hasAnyAuthority("Admin","Editor")
 		//.anyRequest().permitAll()  - vào ko cần xác thực
 		.anyRequest().authenticated() // tất cả các request đều phải log in
 		.and()

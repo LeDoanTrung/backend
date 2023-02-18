@@ -15,7 +15,7 @@
         </div>
         
 
-        <form th:action="@{/brands/save}" method="post" style="max-width: 700px; margin: 0 auto;" th:object="${brand}" enctype="multipart/form-data"  onsubmit="return checkEmailUnique(this);">
+        <form th:action="@{/brands/save}" method="post" style="max-width: 700px; margin: 0 auto;" th:object="${brand}" enctype="multipart/form-data"  onsubmit="return checkNameUnique(this);">
            
             <!-- enctype="multipart/form-data" interact with images -->
             <input type="hidden" th:field="*{id}" />
@@ -28,10 +28,21 @@
                 </div>
 
                 <div class="form-group row">
-                    <label class="col-sm-4 col-form-label">Categories: </label>
+                    <label for="" class="col-sm-4 col-form-label">Logo: </label>
+                    <div class="col-sm-8">
+                        <input type="hidden" th:field="*{logos}"/>
+                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpg" class="mb-2"/>
+                        <img th:src="@{${brand.photosImagePath}}" alt="Logos Review" id="thumbnail" class="img-fluid" />
+                    </div>   
+                 
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-4 col-form-label">Select one or more categories: </label>
                     <div class="col-sm-8 ">
-                        <select th:field="*{categories}" class="form-control">
-                            <option value="0">[No parent]</option>
+                        <select th:field="*{categories}" class="form-control" multiple required
+                            style="resize: vertical; height: 200px;">
+                            
                             <th:block th:each="cate : ${listCategories}">
                                 <option th:value="${cate.id}">[[${cate.name}]]</option>
                             </th:block>
@@ -42,14 +53,15 @@
             
 
                 <div class="form-group row">
-                    <label for="" class="col-sm-4 col-form-label">Logo: </label>
-                    <div class="col-sm-8">
-                        <input type="hidden" th:field="*{logos}"/>
-                        <input type="file" id="fileImage" name="image" accept="image/png, image/jpg" class="mb-2"/>
-                        <img th:src="@{${brand.photosImagePath}}" alt="Logos Review" id="thumbnail" class="img-fluid" />
-                    </div>   
-                 
+                    <label class="col-sm-4 col-form-label">Chosen categories: </label>
+
+                    <div class="col-sm-8 ">
+                       <div id="chosenCategories">
+                        
+                       </div>
+                    </div>
                 </div>
+                
 
                 <div class="text-center">
                     <input type="submit" value="Save" class="btn btn-primary m-3">
@@ -83,6 +95,7 @@
    <script type="text/javascript">
     MAX_FILE_SIZE = 102400;
     moduleURL = "[[@{/brands}]]";
+
     function checkNameUnique(form){
         url = "[[@{/brands/check_name}]]";// /ShoppingCartAdmin/users/check_email"
         brandName = $("#name").val();
@@ -110,6 +123,29 @@
         });
 
             return false;
+    };
+
+
+    $(document).ready(function(){
+        dropdownCategories = $("#categories");
+        divChosenCategories = $("#chosenCategories")
+
+        dropdownCategories.change(function(){
+            divChosenCategories.empty();
+            showChosenCategories();
+        });
+
+        showChosenCategories();
+    });
+
+    //JQuery
+    function showChosenCategories(){
+        dropdownCategories.children("option:selected").each(function(){ //.children() se list ra tat ca thang con.    .each() nhu 1 vong for
+            selectedCategory = $(this);
+            catId = selectedCategory.val();
+            catName = selectedCategory.text().replace(/-/g,"");
+            divChosenCategories.append("<span class= 'badge badge-secondary m-1'>"+ catName + "</span>");
+        });
     }
    </script>
 

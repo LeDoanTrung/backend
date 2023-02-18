@@ -5,7 +5,7 @@ package com.shoppingcart.admin.entity;
 import javax.persistence.Transient;
 import java.util.HashSet;
 import java.util.Set;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -37,6 +37,9 @@ public class Category extends IdBaseEntity{
 	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
 	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	private Product product;
 	
 	public Category(String name) {
 		this.name = name;
@@ -117,7 +120,7 @@ public class Category extends IdBaseEntity{
 	
 	@Override
 	public String toString() {
-		return "Category [id="+ id + ", name =" + name + ", alias =" + alias;
+		return this.name;
 	}
 	
 	@Transient
@@ -161,6 +164,7 @@ public class Category extends IdBaseEntity{
 		return hasChildren;
 	}
 
+	
 	public void setHasChildren(boolean hasChildren) {
 		this.hasChildren = hasChildren;
 	}
@@ -172,5 +176,5 @@ public class Category extends IdBaseEntity{
 	}
 	
 
-	
+	  
 }

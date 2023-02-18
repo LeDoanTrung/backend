@@ -11,8 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 // Tạo entity "User" tương ứng với table users
 // Nếu ko khai báo name của @Entity hoặc @Table thì nó lấy tên class đặt làm tên của @Entity và @Table
 @Entity
