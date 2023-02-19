@@ -37,9 +37,7 @@ public class Category extends IdBaseEntity{
 	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
-	private Product product;
+	
 	
 	public Category(String name) {
 		this.name = name;

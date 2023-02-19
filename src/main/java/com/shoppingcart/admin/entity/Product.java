@@ -5,6 +5,8 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -20,28 +22,31 @@ public class Product extends IdBaseEntity{
 	@Column(length = 255, nullable = false, unique = true)
 	private String alias;
 	
-	@Column(length = 512, nullable = false)
+	@Column(length = 512, nullable = false, name = "short_description")
 	private String shortDescription;
 	
-	@Column(length = 4096, nullable =false)
+	@Column(length = 4096, nullable =false, name = "full_description")
 	private String fullDescription;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name = "main_image")
 	private String mainImage;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name = "create_time", updatable = false)
 	private Date createTime;
 	
-	private Date updateTime;
+	@Column(name = "updated_time")
+	private Date updatedTime;
 	
 	private boolean enabled;
 	
+	@Column(name = "in_stock")
 	private boolean inStock;
 	
 	private float cost;
 	
 	private float price;
 	
+	@Column(name = "discount_percent")
 	private float discountPercent;
 	
 	private float length;
@@ -52,11 +57,13 @@ public class Product extends IdBaseEntity{
 	
 	private float weight;
 	
-	@OneToMany(mappedBy = "product")
-	private Set<Brand> brands;
+	@ManyToOne
+	@JoinColumn(name = "brand_id")
+	private Brand brand;
 	
-	@OneToOne(mappedBy = "product")
-	private Category categories;
+	@ManyToOne
+	@JoinColumn(name = "category_id")
+	private Category category;
 
 	public String getName() {
 		return name;
@@ -106,13 +113,7 @@ public class Product extends IdBaseEntity{
 		this.createTime = createTime;
 	}
 
-	public Date getUpdateTime() {
-		return updateTime;
-	}
-
-	public void setUpdateTime(Date updateTime) {
-		this.updateTime = updateTime;
-	}
+	
 
 	public boolean isEnabled() {
 		return enabled;
@@ -186,26 +187,35 @@ public class Product extends IdBaseEntity{
 		this.weight = weight;
 	}
 
-	public Set<Brand> getBrands() {
-		return brands;
+	
+	public Brand getBrand() {
+		return brand;
 	}
 
-	public void setBrands(Set<Brand> brands) {
-		this.brands = brands;
+	public void setBrand(Brand brand) {
+		this.brand = brand;
 	}
 
-	public Category getCategories() {
-		return categories;
+	public Category getCategory() {
+		return category;
 	}
 
-	public void setCategories(Category categories) {
-		this.categories = categories;
+	public void setCategory(Category category) {
+		this.category = category;
 	}
+
+	
+	
+	public Product() {
+		super();
+	}
+	
+
 
 	public Product(String name, String alias, String shortDescription, String fullDescription, String mainImage,
-			Date createTime, Date updateTime, boolean enabled, boolean inStock, float cost, float price,
-			float discountPercent, float length, float width, float height, float weight, Set<Brand> brands,
-			Category categories) {
+			Date createTime, Date updatedTime, boolean enabled, boolean inStock, float cost, float price,
+			float discountPercent, float length, float width, float height, float weight, Brand brand,
+			Category category) {
 		super();
 		this.name = name;
 		this.alias = alias;
@@ -213,7 +223,7 @@ public class Product extends IdBaseEntity{
 		this.fullDescription = fullDescription;
 		this.mainImage = mainImage;
 		this.createTime = createTime;
-		this.updateTime = updateTime;
+		this.updatedTime = updatedTime;
 		this.enabled = enabled;
 		this.inStock = inStock;
 		this.cost = cost;
@@ -223,15 +233,18 @@ public class Product extends IdBaseEntity{
 		this.width = width;
 		this.height = height;
 		this.weight = weight;
-		this.brands = brands;
-		this.categories = categories;
+		this.brand = brand;
+		this.category = category;
 	}
-	
-	
-	public Product() {
-		super();
+
+	public Date getUpdatedTime() {
+		return updatedTime;
 	}
-	
+
+	public void setUpdatedTime(Date updatedTime) {
+		this.updatedTime = updatedTime;
+	}
+
 	@Transient
 	public String getPhotosImagePath() {
 		if (id == null || mainImage == null ) return "/images/image-thumbnail.png"; //nếu ko có image thì hiển thị

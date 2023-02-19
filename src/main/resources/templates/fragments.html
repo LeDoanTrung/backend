@@ -93,8 +93,8 @@
         <div>
             Category:&nbsp;
             <div >
-                 <select th:field="*{categories}" class="form-control">
-                            <th:block th:each="cate : ${prodcut.categories}">
+                 <select th:field="*{category}" class="form-control">
+                            <th:block th:each="cate : ${listCategories}">
                                 <option th:value="${cate.id}">[[${cate.name}]]</option>
                             </th:block>
                 </select>

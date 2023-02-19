@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -47,9 +48,7 @@ public class Brand extends IdBaseEntity{
 	inverseJoinColumns = @JoinColumn(name = "category_id"))
 	private Set<Category> categories = new HashSet<>();
 
-	@ManyToOne
-	@JoinColumn(name ="product_id")
-	private Product product;
+	
 	
 	public Set<Category> getCategories() {
 		return categories;
