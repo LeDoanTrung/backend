@@ -89,36 +89,39 @@
         
     </div>
 
-    <div th:fragment="search_form_and_message2(entity)" style="display: flex">
-        <form th:action="@{${entity}+'/page/1'}" class="form-inline m-3">
-            Category:&nbsp;
-            <div >
-                 <select class="form-control">
-                            <option value="0">All Categories</option>
-                            <th:block th:each="cate : ${listCategories}">
-                                <option th:value="${cate.id}">[[${cate.name}]]</option>
-                            </th:block>
-                </select>
-                       
-            </div>
-        </form>
+    <div th:fragment="search_form_and_message2(entity)" >
+        <div style="display: flex">
+            <form th:action="@{${entity}+'/page/1'}" class="form-inline m-3">
+                Category:&nbsp;
+                <div >
+                     <select class="form-control">
+                                <option value="0">All Categories</option>
+                                <th:block th:each="cate : ${listCategories}">
+                                    <option th:value="${cate.id}">[[${cate.name}]]</option>
+                                </th:block>
+                    </select>
+                           
+                </div>
+            </form>
+                
             
-        
-        <form th:action="@{${entity}+'/page/1'}" class="form-inline m-3">
-            <input type="hidden" name="sortField" th:value="${sortField}" />
-            <input type="hidden" name="sortDir" th:value="${sortDir}" />
-
-            Filter:&nbsp;
-            <input type="search" name="keyword" th:value="${keyword}" class="form-control" required>
-            &nbsp;&nbsp;
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-search"></i>
-            </button>
-            &nbsp;&nbsp;
-            <button type="button" class="btn btn-secondary" onclick="clearFilter()">
-                <i class="fas fa-eraser"></i>
-            </button>
-        </form>
+            <form th:action="@{${entity}+'/page/1'}" class="form-inline m-3">
+                <input type="hidden" name="sortField" th:value="${sortField}" />
+                <input type="hidden" name="sortDir" th:value="${sortDir}" />
+    
+                Filter:&nbsp;
+                <input type="search" name="keyword" th:value="${keyword}" class="form-control" required>
+                &nbsp;&nbsp;
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-secondary" onclick="clearFilter()">
+                    <i class="fas fa-eraser"></i>
+                </button>
+            </form>
+        </div>
+       
 
         <div th:if="${message != null}" class="alert alert-success text-center">
             [[${message}]]

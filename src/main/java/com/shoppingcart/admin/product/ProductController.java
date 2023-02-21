@@ -48,12 +48,13 @@ public class ProductController {
 	@GetMapping("/products/new")
 	public String createNew(Model model) {
 		List<Brand> listBrands = brandService.listAll(); 
-		//List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 		Product product = new Product();
+		product.setEnabled(true);
+		product.setInStock(true);
 		model.addAttribute("listBrands", listBrands);
-	//	model.addAttribute("listCategories", listCategories);
 		model.addAttribute("product", product);
-		model.addAttribute("pageTitle", "Create Product");
+		model.addAttribute("pageTitle", "Create New Product");
+		model.addAttribute("numberOfExistingExtraImages", 0);
 		
 		return "products/product_form";
 	}
