@@ -249,7 +249,7 @@ public class Product extends IdBaseEntity{
 	public String getPhotosImagePath() {
 		if (id == null || mainImage == null ) return "/images/image-thumbnail.png"; //nếu ko có image thì hiển thị
 		
-		return "/product-mainImages/" + this.id + "/"+ this.mainImage;
+		return "/product-images/" + this.id + "/"+ this.mainImage;
 	}
 	
 	

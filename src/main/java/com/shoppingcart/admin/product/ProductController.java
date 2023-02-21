@@ -1,6 +1,7 @@
 package com.shoppingcart.admin.product;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -47,10 +48,10 @@ public class ProductController {
 	@GetMapping("/products/new")
 	public String createNew(Model model) {
 		List<Brand> listBrands = brandService.listAll(); 
-		List<Category> listCategories = brandService.listCategories();
+		//List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 		Product product = new Product();
 		model.addAttribute("listBrands", listBrands);
-		model.addAttribute("listCategories", listCategories);
+	//	model.addAttribute("listCategories", listCategories);
 		model.addAttribute("product", product);
 		model.addAttribute("pageTitle", "Create Product");
 		
@@ -63,9 +64,10 @@ public class ProductController {
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename()); // Amina Elshal.png--> Amina Elshal.png
 			product.setMainImage(fileName);
+			product.setCreateTime(new Date());
 			Product savedProduct = service.save(product);
 			
-			String uploadDir = "product-mainImages/" + savedProduct.getId(); // tạo folder user-photos theo id để lưu hình
+			String uploadDir = "product-images/" + savedProduct.getId(); // tạo folder user-photos theo id để lưu hình
 			
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir,fileName, multipartFile);
@@ -128,7 +130,7 @@ public class ProductController {
 	public String listByPage(@PathVariable(name="pageNum") int pageNum, Model model,
 			@Param("sortField") String sortField, @Param("sortDir") String sortDir,
 			@Param("keyword") String keyword) {
-		
+		List<Category> listCategories = categoryService.listCategoriesUsedInForm();
 		if (sortDir == null || sortDir.isEmpty()) {
 			sortDir="asc";
 		}
@@ -154,6 +156,7 @@ public class ProductController {
 		model.addAttribute("endCount", endCount);
 		model.addAttribute("totalItems", page.getTotalElements());
 		model.addAttribute("listProducts", listProducts);
+		model.addAttribute("listCategories", listCategories);
 		model.addAttribute("sortDir", sortDir);
 		model.addAttribute("sortField", sortField);
 		model.addAttribute("reverseSortDir", reverseSortDir);

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments :: page_head('Brands - Shopping Cart Admin','none')"/>
+<head th:replace="fragments :: page_head('Products - Shopping Cart Admin','none')"/>
 <body>
 
 
@@ -22,7 +22,7 @@
         <!-- $ để lấy giá trị từ bên Model -->
         <!-- Method Dạng GET sẽ chuyển các input thành các PARAM sau dấu chấm hỏi trên đường dẫn -->
         
-        <div th:replace="fragments :: search_form_and_message('/products')" />
+        <div th:replace="fragments :: search_form_and_message2('/products')" />
 
         <div class="full-details">
             <table class="table table-bordered table-striped table-hover table-reponsive-xl">
@@ -56,18 +56,24 @@
 
                         <td class="hideable-column">[[${product.id}]]</td>
                         <td>
-                            <div th:replace="fragments :: product_mainImages"/>
+                            <div th:replace="fragments :: product_mainImage"/>
                         </td>
                         <td class="hideable-column">[[${product.name}]]</td>
 
-                        <td></td>
-                        <td></td>
+                        <td>
+                            <span class="badge badge-secondary">[[${product.brand}]]</span>
+                        </td>
+                        
 
                         <td>
-                            <th:block th:each="category : ${product.category}">
-                                <span class="badge badge-secondary">[[${category.name}]]</span>
-                            </th:block>
+                                <span class="badge badge-secondary">[[${product.category}]]</span>
                         </td>
+
+                        <td>
+                            <div th:replace="fragments :: status(${product.enabled}, 'products', '/products/'+${product.id})" />
+
+                        </td>
+
                         <td>
                             <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
                             &nbsp;&nbsp;
@@ -82,12 +88,12 @@
             <div class="row m-1" th:each="product : ${listProducts}">
 
                 <div class="col-4">
-                    <div th:replace="fragments :: product_mainImages"/>
+                    <div th:replace="fragments :: product_mainImage"/>
                 </div>
 
                 <div class="col-8">
                     <div > [[${product.name}]]</div>
-                    <div > [[${product.categories}]]</div>
+                    <div > [[${product.category}]]</div>
                     <div class="mt-2">
                         <div th:replace="fragments :: edit('product', '/products/edit/' + ${product.id})" />
                         &nbsp;&nbsp;
@@ -106,7 +112,9 @@
         <div th:replace="fragments :: pagination('products','/products')"></div>
         
         <div th:replace="fragments :: footer"></div>
+        
 </div>
+
    <script th:src="@{/js/common_list.js}"></script>
    <script type ="text/javascript">
     moduleURL = "[[@{/products}]]";

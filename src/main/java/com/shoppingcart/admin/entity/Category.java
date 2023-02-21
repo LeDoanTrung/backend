@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -104,13 +105,6 @@ public class Category extends IdBaseEntity{
 		this.enabled = enabled;
 	}
 
-	public Category(String name, String alias, String image, boolean enabled) {
-		super();
-		this.name = name;
-		this.alias = alias;
-		this.image = image;
-		this.enabled = enabled;
-	}
 
 	public Category() {
 		super();
@@ -153,6 +147,8 @@ public class Category extends IdBaseEntity{
 		
 		return copyCategory;
 	}
+	
+	
 	
 	@Transient
 	private boolean hasChildren;

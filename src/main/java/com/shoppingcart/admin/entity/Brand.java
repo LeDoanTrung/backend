@@ -79,4 +79,9 @@ public class Brand extends IdBaseEntity{
 		
 		return "/brand-logos/" + this.id + "/"+ this.logos;
 	}
+	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 }
