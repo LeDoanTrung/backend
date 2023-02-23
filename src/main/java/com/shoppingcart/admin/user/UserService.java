@@ -47,6 +47,7 @@ public class UserService {
 		boolean isUpdatingUser = (user.getId() != null);
 		
 		if (isUpdatingUser) {
+			
 			User existingUser = userRepo.findById(user.getId()).get();
 			
 			if (user.getPassword().isEmpty()) {

@@ -88,8 +88,12 @@ public class ProductController {
 	public String editProduct ( Model model, RedirectAttributes redirectAttributes, @PathVariable(name="id") Integer id) {
 		try {
 			List<Product> listProducts = service.listAll();
+			List<Brand> listBrands = brandService.listAll(); 
 			model.addAttribute("listProducts", listProducts);
 			Product product = service.get(id);
+			List<Category> listCategories = brandService.listCategories();
+			model.addAttribute("listBrands", listBrands);
+			
 			model.addAttribute("product", product);
 			model.addAttribute("pageTitle", "Edit Product (ID: " + id +")");
 			
