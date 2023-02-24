@@ -37,7 +37,7 @@
                 <th:block th:if="${product.category != null}">
                     <select th:field="*{category}" class="form-control" required>
                             <th:block th:each="cat : ${product.brand.categories}">
-                                    <option value="${cat.id}">[[${cat.name}]]</option>
+                                    <option th:value="${cat.id}">[[${cat.name}]]</option>
                             </th:block>
                     </select>
                 </th:block>

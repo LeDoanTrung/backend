@@ -1,8 +1,10 @@
 package com.shoppingcart.admin.product;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -87,13 +89,10 @@ public class ProductController {
 	@GetMapping("/products/edit/{id}")
 	public String editProduct ( Model model, RedirectAttributes redirectAttributes, @PathVariable(name="id") Integer id) {
 		try {
-			List<Product> listProducts = service.listAll();
+	
 			List<Brand> listBrands = brandService.listAll(); 
-			model.addAttribute("listProducts", listProducts);
 			Product product = service.get(id);
-			List<Category> listCategories = brandService.listCategories();
 			model.addAttribute("listBrands", listBrands);
-			
 			model.addAttribute("product", product);
 			model.addAttribute("pageTitle", "Edit Product (ID: " + id +")");
 			
